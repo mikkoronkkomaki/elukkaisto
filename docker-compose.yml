@@ -1,0 +1,62 @@
+version: '2'
+services:
+  elukkaisto-db:
+    image: kartoza/postgis:13-3.1
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: elukkaisto
+      POSTGRES_USER: elukkaisto
+      POSTGRES_PASSWORD: elukkaisto
+      ALLOW_IP_RANGE: 0.0.0.0/0
+      SHARED_PRELOAD_LIBRARIES: 'pg_cron,pg_stat_statements'
+
+  migrate:
+    build: ./flyway-psql
+    entrypoint: |
+      /bin/bash -c "
+        flyway --version
+      
+        until flyway -url=jdbc:postgresql://elukkaisto-db/elukkaisto -user=elukkaisto -password=elukkaisto info &>/dev/null; do
+          echo Odotetaan että Flyway saa yhteyden kantaan...
+          sleep 0.5
+        done
+
+        # Bugin kierto https://github.com/petere/homebrew-postgresql/issues/51
+        PGGSSENCMODE=disable
+
+        echo Poistetaan hstore extension
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"DROP EXTENSION hstore;\"
+        echo 'Lisätään btree_gist extension (version-voimassaolo constrainteja varten)'
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"CREATE EXTENSION btree_gist;\"
+
+        echo -e '\e[1m\e[35m--- Ajetaan migraatiot ---\e[0m'
+        flyway -url=jdbc:postgresql://elukkaisto-db/elukkaisto -schemas=elukkaisto -locations=filesystem:/tietokanta/flyway -user=elukkaisto -password=elukkaisto migrate
+        echo -e '\e[1m\e[32m--- Migraatiot ajettu ---\e[0m'
+
+        echo -e '\e[1m\e[35m--- Ajetaan testidata ---\e[0m'
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto elukkaisto -X -a -v ON_ERROR_STOP=1 --pset pager=off -f /tietokanta/testidata/alusta-testidata.sql > /dev/null
+        echo -e '\e[1m\e[32m--- Testidata ajettu ---\e[0m'
+
+        echo Luodaan uusi käyttäjä "elukkaisto_test"
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"CREATE USER elukkaisto_test WITH CREATEDB;\"
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"ALTER USER elukkaisto_test WITH SUPERUSER;\"
+
+        echo Tapetaan muut yhteydet templaten luontia varten
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'elukkaisto' AND pid <> pg_backend_pid();\"
+            
+        echo Luodaan "elukkaisto_template" tietokanta
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"CREATE DATABASE elukkaisto_template WITH TEMPLATE elukkaisto OWNER elukkaisto_test;\"
+
+        echo Luodaan "elukkaisto" testitietokanta
+        PGPASSWORD=elukkaisto psql -h elukkaisto-db -p 5432 -U elukkaisto -c \"CREATE DATABASE elukkaisto_test WITH TEMPLATE elukkaisto_template OWNER elukkaisto;\"
+
+        echo -e '\e[1m\e[32m\e[5m\e[4m--- Elukkaisto-tietokanta pystyssä. Älä sulje tätä komentokehotetta. Voit aloittaa käytön. ---\e[0m'
+        "
+
+    volumes:
+      - ./tietokanta/flyway/:/tietokanta/flyway
+      - ./tietokanta/testidata/:/tietokanta/testidata
+
+    links:
+      - elukkaisto-db
