@@ -22,24 +22,30 @@
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.core/jackson-core:2.9.0" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.dataformat/jackson-dataformat-cbor:2.9.0" level="project" />
     <orderEntry type="library" name="Leiningen: com.fasterxml.jackson.dataformat/jackson-dataformat-smile:2.9.0" level="project" />
+    <orderEntry type="library" name="Leiningen: com.layerware/hugsql-adapter-clojure-java-jdbc:0.5.1" level="project" />
+    <orderEntry type="library" name="Leiningen: com.layerware/hugsql-adapter:0.5.1" level="project" />
+    <orderEntry type="library" name="Leiningen: com.layerware/hugsql-core:0.5.1" level="project" />
+    <orderEntry type="library" name="Leiningen: com.layerware/hugsql:0.5.1" level="project" />
+    <orderEntry type="library" name="Leiningen: com.taoensso/encore:3.12.1" level="project" />
+    <orderEntry type="library" name="Leiningen: com.taoensso/timbre:5.1.2" level="project" />
+    <orderEntry type="library" name="Leiningen: com.taoensso/truss:1.6.0" level="project" />
+    <orderEntry type="library" name="Leiningen: com.zaxxer/HikariCP:3.4.5" level="project" />
     <orderEntry type="library" name="Leiningen: commons-codec:1.6" level="project" />
+    <orderEntry type="library" name="Leiningen: hikari-cp:2.13.0" level="project" />
+    <orderEntry type="library" name="Leiningen: io.aviso/pretty:0.1.37" level="project" />
     <orderEntry type="library" name="Leiningen: javax.servlet/servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Leiningen: nrepl:0.6.0" level="project" />
+    <orderEntry type="library" name="Leiningen: org.checkerframework/checker-qual:3.5.0" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.10.0" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.async:0.3.443" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.cache:0.6.5" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.memoize:0.5.9" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.2.44" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/data.priority-map:0.0.7" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/java.jdbc:0.6.2-alpha3" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/java.jdbc:0.7.12" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/spec.alpha:0.2.176" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/tools.analyzer.jvm:0.7.0" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/tools.analyzer:0.6.9" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/tools.reader:1.0.0-beta4" level="project" />
-    <orderEntry type="library" name="Leiningen: org.ow2.asm/asm-all:4.2" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/tools.reader:1.3.2" level="project" />
+    <orderEntry type="library" name="Leiningen: org.postgresql/postgresql:42.3.1" level="project" />
+    <orderEntry type="library" name="Leiningen: org.slf4j/slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Leiningen: org.tobereplaced/lettercase:1.0.0" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-codec:1.0.1" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-mock:0.3.2" level="project" />
     <orderEntry type="library" name="Leiningen: tigris:0.1.1" level="project" />
-    <orderEntry type="library" name="Leiningen: webjure/jeesql:0.4.7" level="project" />
   </component>
 </module>
